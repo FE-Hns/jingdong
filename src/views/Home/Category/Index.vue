@@ -34,6 +34,7 @@ export default defineComponent({
     p {
       font-size: 0.12rem;
       color: @content-color;
+      margin: 0.06rem 0;
     }
   }
 }
