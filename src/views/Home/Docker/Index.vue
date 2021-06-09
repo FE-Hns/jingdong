@@ -5,18 +5,22 @@
         'docker__item',
         index === activeIndex ? 'docker__item--active' : '',
       ]"
-      v-for="(item, index) in dockerList"
+      v-for="(tag, index) in tags"
       :key="index"
       @click="changeTag(index)"
     >
-      <div class="iconfont docker__item__font" v-html="item.icon"></div>
-      <div class="docker__item__desc">{{ item.label }}</div>
+      <div class="iconfont docker__item__font" v-html="tag.icon"></div>
+      <div class="docker__item__desc">{{ tag.label }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
+interface tag {
+  icon: string | undefined;
+  label: string | undefined;
+}
 export default defineComponent({
   name: "Docker",
   setup() {
@@ -27,13 +31,14 @@ export default defineComponent({
       state.activeIndex = index;
     };
     const { activeIndex } = toRefs(state);
+    const tags: tag[] = [
+      { icon: "&#xe89c;", label: "首页" },
+      { icon: "&#xe6fc;", label: "购物车" },
+      { icon: "&#xe643;", label: "订单" },
+      { icon: "&#xe601;", label: "我的" },
+    ];
     return {
-      dockerList: [
-        { icon: "&#xe89c;", label: "首页" },
-        { icon: "&#xe6fc;", label: "购物车" },
-        { icon: "&#xe643;", label: "订单" },
-        { icon: "&#xe601;", label: "我的" },
-      ],
+      tags,
       activeIndex,
       changeTag,
     };
@@ -42,14 +47,14 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-@import url("../style/variable.less");
+@import url("../../../style/variable.less");
 .docker {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 0.49rem;
-  padding: 0.06rem 0.16rem;
+  padding: 0.06rem 0.18rem;
   box-sizing: border-box;
   display: flex;
   text-align: center;
