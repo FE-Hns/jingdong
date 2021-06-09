@@ -3,6 +3,8 @@
     <div class="wrapper">
       <Location />
       <Search />
+      <Banner />
+      <Category />
     </div>
     <Docker />
   </div>
@@ -13,6 +15,8 @@ import { defineComponent } from "vue";
 import Docker from "./Docker/Index.vue";
 import Location from "./Location/Index.vue";
 import Search from "./Search/Index.vue";
+import Banner from "./Banner/Index.vue";
+import Category from "./Category/Index.vue";
 
 export default defineComponent({
   name: "Home",
@@ -20,6 +24,8 @@ export default defineComponent({
     Docker,
     Location,
     Search,
+    Banner,
+    Category,
   },
 });
 </script>

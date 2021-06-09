@@ -5,7 +5,7 @@
       <input
         type="text"
         class="search__content__input"
-        placeholder="输入店铺。。。"
+        placeholder="请输入商品、店铺"
       />
     </div>
   </div>
