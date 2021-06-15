@@ -5,6 +5,7 @@
       <Search />
       <Banner />
       <Category />
+      <NearBy />
     </div>
     <Docker />
   </div>
@@ -17,6 +18,7 @@ import Location from "./Location/Index.vue";
 import Search from "./Search/Index.vue";
 import Banner from "./Banner/Index.vue";
 import Category from "./Category/Index.vue";
+import NearBy from "./NearBy/Index.vue";
 
 export default defineComponent({
   name: "Home",
@@ -26,6 +28,7 @@ export default defineComponent({
     Search,
     Banner,
     Category,
+    NearBy,
   },
 });
 </script>
