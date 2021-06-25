@@ -14,37 +14,39 @@
     </div>
     <p class="login__register" @click="goToRegister">立即注册</p>
   </div>
+  <Message />
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
+import { $message } from "../../components/Message/Index.vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import { post } from "../../utils/request";
+
+interface dataType {
+  username: string | number;
+  password: string | number;
+}
+
 export default defineComponent({
   name: "Login",
   setup() {
     const router = useRouter();
 
-    const data = reactive({
+    const data = reactive<dataType>({
       username: "",
       password: "",
     });
 
     // 登录
-    const handleClick = () => {
-      localStorage.isLogin = true;
-      router.push({ name: "Home" });
-      axios
-        .post(
-          "https://www.fastmock.site/mock/e696e555bd67c1782c61de73f89e86ac/api/user/login",
-          data
-        )
-        .then(() => {
-          console.log("成功");
-        })
-        .catch(() => {
-          console.log("失败");
-        });
+    const handleClick = async (): Promise<void> => {
+      const res = await post("/user/login", data);
+      const { retCode } = res;
+      if (retCode === 0) {
+        $message("登陆成功！！！");
+        localStorage.isLogin = true;
+        router.push({ name: "Home" });
+      }
     };
 
     // 注册
