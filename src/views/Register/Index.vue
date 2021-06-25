@@ -15,7 +15,7 @@
     <div class="register__button">
       <button @click="handleClick">注 册</button>
     </div>
-    <p class="register__register">已有账号去登录</p>
+    <p class="register__register" @click="goToLogin">已有账号去登录</p>
   </div>
 </template>
 
@@ -26,12 +26,21 @@ export default defineComponent({
   name: "Register",
   setup() {
     const router = useRouter();
+
+    // 注册 注册完之后跳转到首页
     const handleClick = () => {
       localStorage.isLogin = true;
       router.push({ name: "Home" });
     };
+
+    // 去登录 直接跳转到登录
+    const goToLogin = () => {
+      router.push({ name: "Login" });
+    };
+
     return {
       handleClick,
+      goToLogin,
     };
   },
 });

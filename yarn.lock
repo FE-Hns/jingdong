@@ -2095,6 +2095,13 @@
   "resolved" "https://registry.nlark.com/aws4/download/aws4-1.11.0.tgz"
   "version" "1.11.0"
 
+"axios@^0.21.1":
+  "integrity" "sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz"
+  "version" "0.21.1"
+  dependencies:
+    "follow-redirects" "^1.10.0"
+
 "babel-code-frame@^6.22.0":
   "integrity" "sha1-Y/1D99weO7fONZR9uP42mj9Yx0s="
   "resolved" "https://registry.npm.taobao.org/babel-code-frame/download/babel-code-frame-6.26.0.tgz"
@@ -4402,7 +4409,7 @@
     "inherits" "^2.0.3"
     "readable-stream" "^2.3.6"
 
-"follow-redirects@^1.0.0":
+"follow-redirects@^1.0.0", "follow-redirects@^1.10.0":
   "integrity" "sha1-2RFN7Qoc/dM04WTmZirQK/2R/0M="
   "resolved" "https://registry.nlark.com/follow-redirects/download/follow-redirects-1.14.1.tgz?cache=0&sync_timestamp=1620555429589&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.14.1.tgz"
   "version" "1.14.1"

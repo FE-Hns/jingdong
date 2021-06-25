@@ -4,31 +4,58 @@
       <span class="iconfont">&#xe607;</span>
     </div>
     <div class="login__username">
-      <input type="text" placeholder="请输入手机号" />
+      <input type="text" v-model="data.username" placeholder="请输入手机号" />
     </div>
     <div class="login__password">
-      <input type="password" placeholder="请输入密码" />
+      <input type="password" v-model="data.password" placeholder="请输入密码" />
     </div>
     <div class="login__button">
       <button @click="handleClick">登 录</button>
     </div>
-    <p class="login__register">立即注册</p>
+    <p class="login__register" @click="goToRegister">立即注册</p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 export default defineComponent({
   name: "Login",
   setup() {
     const router = useRouter();
+
+    const data = reactive({
+      username: "",
+      password: "",
+    });
+
+    // 登录
     const handleClick = () => {
-      localStorage.isLogin = true;
-      router.push({ name: "Home" });
+      // localStorage.isLogin = true;
+      // router.push({ name: "Home" });
+      axios
+        .post(
+          "https://www.fastmock.site/mock/e696e555bd67c1782c61de73f89e86ac/api/user/login",
+          data
+        )
+        .then(() => {
+          console.log("成功");
+        })
+        .catch(() => {
+          console.log("失败");
+        });
     };
+
+    // 注册
+    const goToRegister = () => {
+      router.push({ name: "Register" });
+    };
+
     return {
       handleClick,
+      goToRegister,
+      data,
     };
   },
 });
