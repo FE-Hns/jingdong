@@ -32,8 +32,8 @@ export default defineComponent({
 
     // 登录
     const handleClick = () => {
-      // localStorage.isLogin = true;
-      // router.push({ name: "Home" });
+      localStorage.isLogin = true;
+      router.push({ name: "Home" });
       axios
         .post(
           "https://www.fastmock.site/mock/e696e555bd67c1782c61de73f89e86ac/api/user/login",
@@ -72,6 +72,7 @@ export default defineComponent({
   left: 0;
   background: #fff;
   padding: 0 0.4rem;
+  text-align: center;
   &__img {
     margin-top: 1.2rem;
     margin-bottom: 0.4rem;
