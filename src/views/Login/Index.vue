@@ -22,6 +22,7 @@ import { defineComponent, reactive } from "vue";
 import { $message } from "../../components/Message/Index.vue";
 import { useRouter } from "vue-router";
 import { post } from "../../utils/request";
+import api from "../../api/Index";
 
 interface dataType {
   username: string | number;
@@ -40,7 +41,7 @@ export default defineComponent({
 
     // 登录
     const handleClick = async (): Promise<void> => {
-      const res = await post("/user/login", data);
+      const res = await post(api.login, data);
       const { retCode } = res;
       if (retCode === 0) {
         $message("登陆成功！！！");
