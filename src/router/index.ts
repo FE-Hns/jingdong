@@ -1,7 +1,10 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/Home/Index.vue";
-import Login from "../views/Login/Index.vue";
-import Register from "../views/Register/Index.vue";
+const Home = () =>
+  import(/* webpackChunkName: "home" */ "../views/Home/Index.vue");
+const Login = () =>
+  import(/* webpackChunkName: "login" */ "../views/Login/Index.vue");
+const Register = () =>
+  import(/* webpackChunkName: "register" */ "../views/Register/Index.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
