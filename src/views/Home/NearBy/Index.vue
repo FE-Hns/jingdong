@@ -2,22 +2,19 @@
   <div class="nearby">
     <h3 class="nearby__title">附近店铺</h3>
     <div class="nearby__content">
-      <div class="nearby__content__item" v-for="n in 10" :key="n">
+      <div class="nearby__content__item" v-for="item in list" :key="item.id">
         <div class="nearby__content__item__img">
-          <img
-            src="https://img30.360buyimg.com/vendersettle/s120x120_jfs/t1/181887/35/6221/81162/60b0f50aE50e95668/d98645c5e41281fb.png"
-            alt=""
-          />
+          <img :src="item.imgUrl" alt="" />
         </div>
         <div class="nearby__content__item__desc">
-          <p class="nearby__content__item__desc__title">沃尔玛</p>
+          <p class="nearby__content__item__desc__title">{{ item.name }}</p>
           <p class="nearby__content__item__desc__detail">
-            <span>月售1万+</span>
-            <span>起送￥0</span>
-            <span>基础运费￥5</span>
+            <span>月售 {{ item.sales }}</span>
+            <span>起送￥{{ item.expressExpensive }}</span>
+            <span>基础运费￥{{ item.basicExpensive }}</span>
           </p>
           <p class="nearby__content__item__desc__discount">
-            VIP尊享满89元减4元运费券（每月3张)
+            {{ item.description }}
           </p>
         </div>
       </div>
@@ -26,9 +23,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { get } from "../../../utils/request";
+import api from "../../../api/Index";
+interface listType {
+  id: number | string;
+  basicExpensive: number;
+  description: string;
+  expressExpensive: number;
+  imgUrl: string;
+  name: string;
+  sales: number;
+}
 export default defineComponent({
   name: "nearby",
+  setup() {
+    let data = reactive<{ list: listType[] }>({
+      list: [],
+    });
+
+    const getNearByList = async () => {
+      const res = await get(api.nearbyList, {});
+      if (res?.retCode === 0) {
+        data.list = res?.data;
+      }
+    };
+
+    onMounted(() => {
+      getNearByList();
+    });
+
+    const { list } = toRefs(data);
+
+    return { list };
+  },
 });
 </script>
 
