@@ -5,6 +5,8 @@ const Login = () =>
   import(/* webpackChunkName: "login" */ "../views/Login/Index.vue");
 const Register = () =>
   import(/* webpackChunkName: "register" */ "../views/Register/Index.vue");
+const Shop = () =>
+  import(/* webpackChunkName: "shop" */ "../views/Shop/Index.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -29,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
       const { isLogin } = localStorage;
       isLogin ? next({ name: "Home" }) : next();
     },
+  },
+  {
+    path: "/shop/:id",
+    name: "Shop",
+    component: Shop,
   },
 ];
 

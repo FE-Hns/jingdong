@@ -1,7 +1,14 @@
 <template>
   <div class="nearby">
     <h3 class="nearby__title">附近店铺</h3>
-    <ShopItem v-for="item in list" :key="item.id" :data="item" />
+    <router-link
+      class="link"
+      v-for="item in list"
+      :key="item.id"
+      :to="{ path: `/shop/${item.id}` }"
+    >
+      <ShopItem :data="item" :hasBorder="true" />
+    </router-link>
   </div>
 </template>
 
@@ -50,6 +57,9 @@ export default defineComponent({
 .nearby {
   padding: 0.16rem 0.18rem;
   margin-top: 0.1rem;
+  .link {
+    text-decoration: none;
+  }
   &__title {
     font-size: 0.18rem;
     color: #333;

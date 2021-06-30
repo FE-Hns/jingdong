@@ -4,7 +4,12 @@
       <div class="shop__item__img">
         <img :src="data.imgUrl" alt="" />
       </div>
-      <div class="shop__item__desc">
+      <div
+        :class="{
+          shop__item__desc: true,
+          'shop__item__desc--border': hasBorder,
+        }"
+      >
         <p class="shop__item__desc__title">{{ data.name }}</p>
         <p class="shop__item__desc__detail">
           <span>月售 {{ data.sales }}</span>
@@ -23,7 +28,7 @@
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "ShopItem",
-  props: ["data"],
+  props: ["data", "hasBorder"],
 });
 </script>
 
@@ -44,7 +49,6 @@ export default defineComponent({
     }
     &__desc {
       flex: 1;
-      border-bottom: 1px solid #f1f1f1;
       &__title {
         margin: 0 0 0.08rem 0;
         font-size: 0.16rem;
@@ -62,6 +66,9 @@ export default defineComponent({
         font-size: 0.13rem;
         color: #e93b3b;
         margin: 0 0 0.12rem 0;
+      }
+      &--border {
+        border-bottom: 1px solid #f1f1f1;
       }
     }
   }
