@@ -1,5 +1,6 @@
 <template>
   <div class="shop">
+    <!-- 搜索区域 -->
     <div class="search">
       <span class="iconfont" @click="handleClickBack">&#xe63b;</span>
       <div class="search__content">
@@ -11,8 +12,16 @@
         />
       </div>
     </div>
+    <!-- 商品信息 -->
     <div class="shop__info">
       <ShopItem :data="shopInfo" :hasBorder="false" />
+    </div>
+    <!-- 内容区域 -->
+    <div class="shop__content">
+      <div class="category">
+        <div class="category__item">全部商品</div>
+      </div>
+      <!-- <div class="product"></div> -->
     </div>
   </div>
 </template>
@@ -94,5 +103,14 @@ export default defineComponent({
 }
 .shop__info {
   padding: 0 0.18rem;
+}
+.shop__content {
+  position: absolute;
+  top: 1.4rem;
+  bottom: 0.5rem;
+  left: 0;
+  right: 0;
+}
+.category {
 }
 </style>
