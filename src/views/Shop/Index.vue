@@ -19,9 +19,38 @@
     <!-- 内容区域 -->
     <div class="shop__content">
       <div class="category">
-        <div class="category__item">全部商品</div>
+        <div class="category__item category__item--active">全部商品</div>
+        <div class="category__item">秒杀</div>
+        <div class="category__item">新鲜水果</div>
+        <div class="category__item">休闲食品</div>
+        <div class="category__item">时令蔬菜</div>
+        <div class="category__item">肉蛋家禽</div>
       </div>
-      <!-- <div class="product"></div> -->
+      <div class="product">
+        <div class="product__item" v-for="n in 100" :key="n">
+          <img
+            src="https://img30.360buyimg.com/n1//s160x160_jfs/t1/162676/36/17256/45063/606efc13E81203415/9bd26e263d774800.jpg"
+            alt=""
+          />
+          <div class="product__item__price">
+            <div class="product__item__price__title">番茄250g/份</div>
+            <div class="product__item__price__sale">月售10件</div>
+            <div class="product__item__price__expensive">
+              <div class="product__item__price__expensive__currentPrice">
+                ￥33.6
+              </div>
+              <div class="product__item__price__expensive__originalPrice">
+                ￥33.6
+              </div>
+              <div class="action">
+                <span class="iconfont del">&#xe656;</span>
+                <span class="num">88</span>
+                <span class="iconfont add">&#xe62c;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -110,7 +139,89 @@ export default defineComponent({
   bottom: 0.5rem;
   left: 0;
   right: 0;
+  display: flex;
 }
 .category {
+  width: 0.76rem;
+  background-color: #f5f5f5;
+  font-size: 0.14rem;
+  height: 100%;
+  overflow-y: scroll;
+  &__item {
+    line-height: 0.4rem;
+    text-align: center;
+    color: #333;
+  }
+  &__item--active {
+    background-color: #fff;
+  }
+}
+.product {
+  flex: 1;
+  padding: 0.12rem 0.16rem;
+  overflow-y: scroll;
+  &__item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 0.12rem 0;
+    img {
+      width: 0.68rem;
+      height: 0.68rem;
+    }
+    &__price {
+      margin-left: 0.16rem;
+      flex: 1;
+      &__title {
+        font-size: 0.14rem;
+        color: #333;
+        margin-bottom: 0.06rem;
+      }
+      &__sale {
+        font-size: 0.12rem;
+        color: #333;
+        margin-bottom: 0.06rem;
+      }
+      &__expensive {
+        position: relative;
+        height: 0.2rem;
+        line-height: 0.2rem;
+        &__currentPrice {
+          position: absolute;
+          font-size: 0.12rem;
+          color: #e93b3b;
+          left: 0;
+          top: 0;
+        }
+        &__originalPrice {
+          font-size: 0.2rem;
+          position: absolute;
+          transform: scale(0.5);
+          text-decoration: line-through;
+          left: 28px;
+        }
+        .action {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+          .del {
+            font-size: 0.2rem;
+            margin-right: 0.1rem;
+          }
+          .num {
+            font-size: 0.14rem;
+            color: #333;
+            margin-right: 0.1rem;
+          }
+          .add {
+            font-size: 0.2rem;
+            color: #0091ff;
+          }
+        }
+      }
+    }
+  }
 }
 </style>
