@@ -178,6 +178,7 @@ export default defineComponent({
       &__expensive {
         position: relative;
         line-height: 0.2rem;
+        font-size: 0.12rem;
         &__yen {
           color: #e93b3b;
           font-size: 0.12rem;
