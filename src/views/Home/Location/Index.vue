@@ -21,7 +21,7 @@ export default defineComponent({
 @import url("../../../style/mixin.less");
 .location {
   padding: 0.16rem 0.18rem;
-  color: @content-color;
+  color: @content-color-dark;
   font-size: 0.16rem;
   box-sizing: border-box;
   position: relative;

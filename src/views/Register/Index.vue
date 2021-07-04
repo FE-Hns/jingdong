@@ -10,12 +10,7 @@
       <input type="password" v-model="password" placeholder="请输入密码" />
     </div>
     <div class="register__confirmPassword">
-      <input
-        type="password"
-        v-model="rePassword"
-        @change="checkPassword"
-        placeholder="确认密码"
-      />
+      <input type="password" v-model="rePassword" @change="checkPassword" placeholder="确认密码" />
     </div>
     <div class="register__button">
       <button @click="handleClick">注 册</button>
@@ -88,6 +83,7 @@ export default defineComponent({
 
 <style lang="less" scoped>
 @import url("../../style/mixin.less");
+@import url("../../style/variable.less");
 .register {
   font-size: 0.12rem;
   position: absolute;
@@ -95,7 +91,7 @@ export default defineComponent({
   right: 0;
   bottom: 0;
   left: 0;
-  background: #fff;
+  background-color: @bg-color-white;
   padding: 0 0.4rem;
   text-align: center;
   &__img {
@@ -103,7 +99,7 @@ export default defineComponent({
     margin-bottom: 0.4rem;
     text-align: center;
     span {
-      color: #0091ff;
+      color: @content-color-dark-blue;
       font-size: 0.66rem;
     }
   }
@@ -131,8 +127,8 @@ export default defineComponent({
       width: 2.95rem;
       height: 0.48rem;
       box-sizing: border-box;
-      background: #0091ff;
-      color: #fff;
+      background: @content-color-dark-blue;
+      color: @bg-color-white;
       border-radius: 0.04rem;
       font-size: 0.16rem;
       padding: 0.12rem 0;

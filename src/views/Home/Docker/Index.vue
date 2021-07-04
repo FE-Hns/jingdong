@@ -1,10 +1,7 @@
 <template>
   <div class="docker">
     <div
-      :class="[
-        'docker__item',
-        index === activeIndex ? 'docker__item--active' : '',
-      ]"
+      :class="['docker__item', index === activeIndex ? 'docker__item--active' : '']"
       v-for="(tag, index) in tags"
       :key="index"
       @click="changeTag(index)"
@@ -58,12 +55,12 @@ export default defineComponent({
   box-sizing: border-box;
   display: flex;
   text-align: center;
-  border-top: 0.01rem solid #f1f1f1;
+  border-top: 0.01rem solid @content-color-light-white;
   &__item {
     flex: 1;
     &__font {
       font-size: 0.2rem;
-      color: @content-color;
+      color: @content-color-dark;
       line-height: 0.2rem;
     }
     &__desc {
@@ -71,14 +68,14 @@ export default defineComponent({
       line-height: 0.2rem;
       transform: scale(0.5);
       transform-origin: top center;
-      color: #333;
+      color: @content-color-dark;
       margin-top: 0.03rem;
     }
   }
   &__item--active {
     .docker__item__font,
     .docker__item__desc {
-      color: @content-highlight-color;
+      color: @content-color-blue;
     }
   }
 }

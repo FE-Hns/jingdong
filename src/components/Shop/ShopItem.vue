@@ -33,6 +33,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+@import url("../../style/variable.less");
 .shop {
   font-size: 0.12rem;
   &__item {
@@ -52,23 +53,23 @@ export default defineComponent({
       &__title {
         margin: 0 0 0.08rem 0;
         font-size: 0.16rem;
-        color: #333;
+        color: @content-color-dark;
       }
       &__detail {
         margin: 0 0 0.08rem 0;
         font-size: 0.13rem;
-        color: #333;
+        color: @content-color-dark;
         span {
           margin-right: 0.08rem;
         }
       }
       &__discount {
         font-size: 0.13rem;
-        color: #e93b3b;
+        color: @content-color-orange;
         margin: 0 0 0.12rem 0;
       }
       &--border {
-        border-bottom: 1px solid #f1f1f1;
+        border-bottom: 1px solid @content-color-light-white;
       }
     }
   }

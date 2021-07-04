@@ -1,10 +1,7 @@
 <template>
   <div class="banner">
     <div class="banner__wrapper">
-      <img
-        src="https://img30.360buyimg.com/mobilecms/jfs/t1/132517/9/18568/162168/60bf2613E8dc7a106/fa82cd354fa5c954.gif"
-        alt="图片"
-      />
+      <img src="https://img30.360buyimg.com/mobilecms/jfs/t1/132517/9/18568/162168/60bf2613E8dc7a106/fa82cd354fa5c954.gif" alt="图片" />
     </div>
   </div>
 </template>
