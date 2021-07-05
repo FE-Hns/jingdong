@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL:
-    "https://www.fastmock.site/mock/e696e555bd67c1782c61de73f89e86ac/api",
+  baseURL: "https://www.fastmock.site/mock/e696e555bd67c1782c61de73f89e86ac/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -17,7 +16,7 @@ interface baseResponse {
 export const get = (url: string, params?: any): Promise<baseResponse> => {
   return new Promise((resolve, reject) => {
     return instance
-      .get(url, params)
+      .get(url, { params })
       .then((res) => resolve(res.data))
       .catch((err) => reject(err));
   });

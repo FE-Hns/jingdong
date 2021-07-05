@@ -15,23 +15,25 @@
     <!-- 内容区域 -->
     <div class="shop__content">
       <div class="category">
-        <div class="category__item category__item--active">全部商品</div>
-        <div class="category__item">秒杀</div>
-        <div class="category__item">新鲜水果</div>
-        <div class="category__item">休闲食品</div>
-        <div class="category__item">时令蔬菜</div>
-        <div class="category__item">肉蛋家禽</div>
+        <div
+          :class="['category__item', { 'category__item--active': activeName === tag.value }]"
+          v-for="tag in tags"
+          :key="tag"
+          @click="changeCategory(tag)"
+        >
+          {{ tag.label }}
+        </div>
       </div>
       <div class="product">
-        <div class="product__item" v-for="n in 100" :key="n">
-          <img src="https://img30.360buyimg.com/n1//s160x160_jfs/t1/162676/36/17256/45063/606efc13E81203415/9bd26e263d774800.jpg" alt="" />
+        <div class="product__item" v-for="item in products" :key="item.id">
+          <img :src="item.imgUrl" alt="" />
           <div class="product__item__price">
-            <div class="product__item__price__title">番茄250g/份</div>
-            <div class="product__item__price__sale">月售10件</div>
+            <div class="product__item__price__title">{{ item.title }}</div>
+            <div class="product__item__price__sale">{{ `月售${item.sales}件` }}</div>
             <div class="product__item__price__expensive">
               <span class="product__item__price__expensive__yen">&yen;</span>
-              <span class="product__item__price__expensive__currentPrice">33.6</span>
-              <span class="product__item__price__expensive__originalPrice">&yen;33.6</span>
+              <span class="product__item__price__expensive__currentPrice">{{ item.currentPrice }}</span>
+              <span class="product__item__price__expensive__originalPrice">&yen;{{ item.originalPrice }}</span>
             </div>
           </div>
           <div class="product__item__action">
@@ -46,27 +48,72 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { defineComponent, reactive, toRefs, onMounted, ref } from "vue";
+import { useRouter, useRoute, Router, RouteLocationNormalizedLoaded } from "vue-router";
 import ShopItem from "../../components/Shop/ShopItem.vue";
 import { get } from "../../utils/request";
 import api from "../../api/Index";
 
-// 点击返回图标逻辑
-const backHandler = () => {
-  const router = useRouter();
+interface Tag {
+  label: string;
+  value: string;
+}
+
+interface Product {
+  id: number;
+  title: string;
+  sales: string;
+  currentPrice: number;
+  originalPrice: number;
+}
+
+interface State {
+  shopInfo: any;
+  tags: Tag[];
+  activeName: string;
+  products: Product[];
+}
+
+// 处理返回图标逻辑
+const backHandler = (router: Router) => {
   const handleClickBack = () => {
     router.back();
   };
   return { handleClickBack };
 };
 
-// 获取商铺信息
-const getShopInfo = async () => {
-  const route = useRoute();
-  const result = await get(`${api.getShopInfo}/${route.params.id}`, {});
-  const list = result?.data;
+// 处理获取商铺信息
+const getShopInfo = (route: RouteLocationNormalizedLoaded) => {
+  let list: any = {};
+  (async () => {
+    const result = await get(`${api.getShopInfo}/${route.params.id}`, {});
+    if (result?.retCode === 0) {
+      list = result?.data;
+    }
+  })();
   return list;
+};
+
+// 根据分类获取商品
+const getProductsByCategory = (route: RouteLocationNormalizedLoaded, tag: string) => {
+  let list: Product[] = [];
+  (async () => {
+    const result = await get(`${api.getProductsByCategory}/${route.params.id}/tag`, { tag: tag });
+    if (result?.retCode === 0) {
+      list = result?.data;
+    }
+  })();
+  return list;
+};
+
+// 处理更改分类逻辑
+const changeCategoryHandler = (state: State, route: RouteLocationNormalizedLoaded) => {
+  const changeCategory = (tag: Tag) => {
+    state.activeName = tag.value;
+    getProductsByCategory(route, tag.value);
+  };
+
+  return { changeCategory };
 };
 
 export default defineComponent({
@@ -75,17 +122,43 @@ export default defineComponent({
     ShopItem,
   },
   setup() {
-    const state = reactive({
+    // 数据源
+    const state = reactive<State>({
       shopInfo: {},
+      tags: [
+        { label: "全部商品", value: "all" },
+        { label: "秒杀", value: "second" },
+        { label: "新鲜水果", value: "fruit" },
+        { label: "休闲食品", value: "snacks" },
+        { label: "时令蔬菜", value: "vegetable" },
+        { label: "肉蛋家禽", value: "meat" },
+      ],
+      activeName: "all",
+      products: [],
     });
 
-    const { handleClickBack } = backHandler();
+    const route = useRoute();
 
-    getShopInfo().then((res) => (state.shopInfo = res));
+    const router = useRouter();
 
-    const { shopInfo } = toRefs(state);
+    const { handleClickBack } = backHandler(router);
 
-    return { handleClickBack, shopInfo };
+    const { changeCategory } = changeCategoryHandler(state, route);
+
+    // onMounted
+    onMounted(() => {
+      // 获取商铺信息
+      const shopInfo = getShopInfo(route);
+      state.shopInfo = shopInfo;
+
+      // 获取商品
+      const products = getProductsByCategory(route, state.activeName);
+      state.products = products;
+    });
+
+    const { shopInfo, tags, activeName, products } = toRefs(state);
+
+    return { handleClickBack, shopInfo, tags, activeName, changeCategory, products };
   },
 });
 </script>
