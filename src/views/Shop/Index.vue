@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onMounted, ref, watchEffect } from "vue";
+import { defineComponent, onMounted, ref, watchEffect, Ref } from "vue";
 import { useRouter, useRoute, Router, RouteLocationNormalizedLoaded } from "vue-router";
 import ShopItem from "../../components/Shop/ShopItem.vue";
 import { get } from "../../utils/request";
@@ -67,11 +67,7 @@ interface Product {
   originalPrice: number;
 }
 
-interface State {
-  products: Product[];
-}
-
-const tags = [
+const tags: Tag[] = [
   { label: "全部商品", value: "all" },
   { label: "秒杀", value: "second" },
   { label: "新鲜水果", value: "fruit" },
@@ -114,20 +110,20 @@ const changeCategoryHandler = () => {
 };
 
 // 根据分类获取商品
-const getProductsByCategoryHandler = (route: RouteLocationNormalizedLoaded, tag: string) => {
-  let data = ref([]);
+const getProductsByCategoryHandler = (route: RouteLocationNormalizedLoaded, tag: Ref<Tag>) => {
+  let products = ref<Product[]>([]);
   const id = route.params?.id;
   const getProductsByCategory = async () => {
-    const result = await get(`${api.getShopInfo}/${id}/tag`, { tag: tag });
+    const result = await get(`${api.getShopInfo}/${id}/tag`, { tag: tag.value.value });
     if (result.retCode === 0) {
-      data = result.data;
+      products.value = result.data;
     }
   };
 
   watchEffect(() => {
     getProductsByCategory();
   });
-  return { data };
+  return { products };
 };
 
 export default defineComponent({
@@ -136,24 +132,19 @@ export default defineComponent({
     ShopItem,
   },
   setup() {
-    // 数据源
-    const state = reactive<State>({
-      products: [],
-    });
-
     const route = useRoute();
 
     const router = useRouter();
-
+    // 返回上一页
     const { handleClickBack } = backHandler(router);
-
+    // 切换商品分类
     const { changeCategory, currentTag } = changeCategoryHandler();
-
+    // 回去店铺信息
     const { shopInfo } = getShopInfoHandler(route);
+    // 获取商品信息
+    const { products } = getProductsByCategoryHandler(route, currentTag);
 
-    const { products } = toRefs(state);
-
-    return { handleClickBack, shopInfo, tags, currentTag, products, changeCategory };
+    return { handleClickBack, changeCategory, shopInfo, tags, currentTag, products };
   },
 });
 </script>
