@@ -16,7 +16,7 @@
     <div class="shop__content">
       <div class="category">
         <div
-          :class="['category__item', { 'category__item--active': activeName === tag.value }]"
+          :class="['category__item', { 'category__item--active': currentTag.value === tag.value }]"
           v-for="tag in tags"
           :key="tag"
           @click="changeCategory(tag)"
@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, onMounted, ref } from "vue";
+import { defineComponent, reactive, toRefs, onMounted, ref, watchEffect } from "vue";
 import { useRouter, useRoute, Router, RouteLocationNormalizedLoaded } from "vue-router";
 import ShopItem from "../../components/Shop/ShopItem.vue";
 import { get } from "../../utils/request";
@@ -68,11 +68,17 @@ interface Product {
 }
 
 interface State {
-  shopInfo: any;
-  tags: Tag[];
-  activeName: string;
   products: Product[];
 }
+
+const tags = [
+  { label: "全部商品", value: "all" },
+  { label: "秒杀", value: "second" },
+  { label: "新鲜水果", value: "fruit" },
+  { label: "休闲食品", value: "snacks" },
+  { label: "时令蔬菜", value: "vegetable" },
+  { label: "肉蛋家禽", value: "meat" },
+];
 
 // 处理返回图标逻辑
 const backHandler = (router: Router) => {
@@ -83,37 +89,45 @@ const backHandler = (router: Router) => {
 };
 
 // 处理获取商铺信息
-const getShopInfo = (route: RouteLocationNormalizedLoaded) => {
-  let list: any = {};
-  (async () => {
-    const result = await get(`${api.getShopInfo}/${route.params.id}`, {});
+const getShopInfoHandler = (route: RouteLocationNormalizedLoaded) => {
+  let shopInfo = ref({});
+  const id = route.params?.id;
+  const getData = async () => {
+    const result = await get(`${api.getShopInfo}/${id}`, {});
     if (result?.retCode === 0) {
-      list = result?.data;
+      shopInfo.value = result?.data;
     }
-  })();
-  return list;
+  };
+  onMounted(() => {
+    getData();
+  });
+  return { shopInfo };
+};
+
+// 处理更改分类
+const changeCategoryHandler = () => {
+  let currentTag = ref(tags[0]);
+  const changeCategory = (tag: Tag) => {
+    currentTag.value = tag;
+  };
+  return { currentTag, changeCategory };
 };
 
 // 根据分类获取商品
-const getProductsByCategory = (route: RouteLocationNormalizedLoaded, tag: string) => {
-  let list: Product[] = [];
-  (async () => {
-    const result = await get(`${api.getProductsByCategory}/${route.params.id}/tag`, { tag: tag });
-    if (result?.retCode === 0) {
-      list = result?.data;
+const getProductsByCategoryHandler = (route: RouteLocationNormalizedLoaded, tag: string) => {
+  let data = ref([]);
+  const id = route.params?.id;
+  const getProductsByCategory = async () => {
+    const result = await get(`${api.getShopInfo}/${id}/tag`, { tag: tag });
+    if (result.retCode === 0) {
+      data = result.data;
     }
-  })();
-  return list;
-};
-
-// 处理更改分类逻辑
-const changeCategoryHandler = (state: State, route: RouteLocationNormalizedLoaded) => {
-  const changeCategory = (tag: Tag) => {
-    state.activeName = tag.value;
-    getProductsByCategory(route, tag.value);
   };
 
-  return { changeCategory };
+  watchEffect(() => {
+    getProductsByCategory();
+  });
+  return { data };
 };
 
 export default defineComponent({
@@ -124,16 +138,6 @@ export default defineComponent({
   setup() {
     // 数据源
     const state = reactive<State>({
-      shopInfo: {},
-      tags: [
-        { label: "全部商品", value: "all" },
-        { label: "秒杀", value: "second" },
-        { label: "新鲜水果", value: "fruit" },
-        { label: "休闲食品", value: "snacks" },
-        { label: "时令蔬菜", value: "vegetable" },
-        { label: "肉蛋家禽", value: "meat" },
-      ],
-      activeName: "all",
       products: [],
     });
 
@@ -143,22 +147,13 @@ export default defineComponent({
 
     const { handleClickBack } = backHandler(router);
 
-    const { changeCategory } = changeCategoryHandler(state, route);
+    const { changeCategory, currentTag } = changeCategoryHandler();
 
-    // onMounted
-    onMounted(() => {
-      // 获取商铺信息
-      const shopInfo = getShopInfo(route);
-      state.shopInfo = shopInfo;
+    const { shopInfo } = getShopInfoHandler(route);
 
-      // 获取商品
-      const products = getProductsByCategory(route, state.activeName);
-      state.products = products;
-    });
+    const { products } = toRefs(state);
 
-    const { shopInfo, tags, activeName, products } = toRefs(state);
-
-    return { handleClickBack, shopInfo, tags, activeName, changeCategory, products };
+    return { handleClickBack, shopInfo, tags, currentTag, products, changeCategory };
   },
 });
 </script>
