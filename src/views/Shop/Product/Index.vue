@@ -66,12 +66,12 @@ export default defineComponent({
       flex: 1;
       &__title {
         font-size: 0.14rem;
-        color: #333;
+        color: @content-color-dark;
         line-height: 0.2rem;
       }
       &__sale {
         font-size: 0.12rem;
-        color: #333;
+        color: @content-color-dark;
         margin: 0.06rem 0;
         line-height: 0.16rem;
       }
@@ -80,18 +80,18 @@ export default defineComponent({
         line-height: 0.2rem;
         font-size: 0.12rem;
         &__yen {
-          color: #e93b3b;
+          color: @content-color-orange;
           font-size: 0.12rem;
         }
         &__currentPrice {
           font-size: 0.14rem;
-          color: #e93b3b;
+          color: @content-color-orange;
           margin-right: 0.06rem;
         }
         &__originalPrice {
           font-size: 0.12rem;
           text-decoration: line-through;
-          color: #999;
+          color: @content-color-light-grey;
         }
       }
     }
@@ -104,11 +104,11 @@ export default defineComponent({
       .del {
         font-size: 0.2rem;
         margin-right: 0.1rem;
-        color: #666;
+        color: @content-color-dark-grey;
       }
       .num {
         font-size: 0.14rem;
-        color: #333;
+        color: @content-color-dark;
         margin-right: 0.1rem;
       }
       .add {
