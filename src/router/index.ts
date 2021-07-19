@@ -1,12 +1,8 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-const Home = () =>
-  import(/* webpackChunkName: "home" */ "../views/Home/Index.vue");
-const Login = () =>
-  import(/* webpackChunkName: "login" */ "../views/Login/Index.vue");
-const Register = () =>
-  import(/* webpackChunkName: "register" */ "../views/Register/Index.vue");
-const Shop = () =>
-  import(/* webpackChunkName: "shop" */ "../views/Shop/Index.vue");
+const Home = () => import(/* webpackChunkName: "home" */ "../views/Home/Index.vue");
+const Login = () => import(/* webpackChunkName: "login" */ "../views/Login/Index.vue");
+const Register = () => import(/* webpackChunkName: "register" */ "../views/Register/Index.vue");
+const Shop = () => import(/* webpackChunkName: "shop" */ "../views/Shop/Index.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -46,8 +42,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const { isLogin } = localStorage;
-  const isLoginPageOrRegisterPage =
-    to.name === "Login" || to.name === "Register";
+  const isLoginPageOrRegisterPage = to.name === "Login" || to.name === "Register";
   isLogin || isLoginPageOrRegisterPage ? next() : next({ name: "Login" });
 });
 
