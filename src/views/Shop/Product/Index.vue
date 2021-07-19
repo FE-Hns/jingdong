@@ -23,9 +23,16 @@
           </div>
         </div>
         <div class="product__item__action">
-          <span class="iconfont del">&#xe656;</span>
-          <span class="num">88</span>
-          <span class="iconfont add">&#xe62c;</span>
+          <span
+            class="iconfont del"
+            @click="delToCart(shopId, item.id, item)"
+            v-if="cartList[shopId]?.[item.id]?.count > 0"
+            >&#xe656;</span
+          >
+          <span class="num" v-if="cartList[shopId]?.[item.id]?.count > 0">{{
+            cartList[shopId]?.[item.id]?.count || 0
+          }}</span>
+          <span class="iconfont add" @click="addToCart(shopId, item.id, item)">&#xe62c;</span>
         </div>
       </div>
     </div>
@@ -35,6 +42,7 @@
 <script lang="ts">
 import { defineComponent, watchEffect, ref, Ref } from "vue";
 import { useRoute, RouteLocationNormalizedLoaded } from "vue-router";
+import { useStore, Store } from "vuex";
 import { get } from "../../../utils/request";
 import api from "../../../api/Index";
 
@@ -87,18 +95,36 @@ const getProductsByCategoryHandler = (route: RouteLocationNormalizedLoaded, tag:
   return { products };
 };
 
+// 购物车逻辑
+const cartEeffect = (store: Store<any>) => {
+  const addToCart = (shopId: string, productId: string, shopInfo: any) => {
+    store.commit("addToCart", { shopId, productId, shopInfo });
+  };
+  return { addToCart };
+};
+
 export default defineComponent({
   name: "Product",
   setup() {
     // 获取路径
     const route = useRoute();
+    // 获取vuex
+    const store = useStore();
 
+    const {
+      state: { cartList },
+    } = store;
+
+    // 获取shopId
+    const shopId = route.params.id;
     // 切换商品分类
     const { changeCategory, currentTag } = changeCategoryHandler();
     // 获取商品信息
     const { products } = getProductsByCategoryHandler(route, currentTag);
+    // 购物车逻辑
+    const { addToCart } = cartEeffect(store);
 
-    return { changeCategory, currentTag, products, tags };
+    return { changeCategory, currentTag, products, tags, store, shopId, addToCart, cartList };
   },
 });
 </script>
