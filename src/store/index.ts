@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 interface CartType {
   shopId: string;
   productId: string;
@@ -87,4 +88,5 @@ export default createStore({
   },
   actions: {},
   modules: {},
+  plugins: [createPersistedState()],
 });
