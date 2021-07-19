@@ -100,12 +100,13 @@ const getProductsByCategoryHandler = (route: RouteLocationNormalizedLoaded, tag:
   let products = ref<Product[]>([]);
   const id = route.params?.id;
   const getProductsByCategory = async () => {
-    const result = await get(`${api.getShopInfo}/${id}/tag`, { tag: tag.value.value });
+    const result = await get(`${api.getProductsByCategory}/${id}/tag`, { tag: tag.value.value });
     if (result.retCode === 0) {
       products.value = result.data;
     }
   };
 
+  // 收集依赖阶段触发
   watchEffect(() => {
     getProductsByCategory();
   });
