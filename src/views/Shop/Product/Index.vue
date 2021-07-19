@@ -100,7 +100,10 @@ const cartEeffect = (store: Store<any>) => {
   const addToCart = (shopId: string, productId: string, shopInfo: any) => {
     store.commit("addToCart", { shopId, productId, shopInfo });
   };
-  return { addToCart };
+  const delToCart = (shopId: string, productId: string, shopInfo: any) => {
+    store.commit("delToCart", { shopId, productId, shopInfo });
+  };
+  return { addToCart, delToCart };
 };
 
 export default defineComponent({
@@ -122,9 +125,9 @@ export default defineComponent({
     // 获取商品信息
     const { products } = getProductsByCategoryHandler(route, currentTag);
     // 购物车逻辑
-    const { addToCart } = cartEeffect(store);
+    const { addToCart, delToCart } = cartEeffect(store);
 
-    return { changeCategory, currentTag, products, tags, store, shopId, addToCart, cartList };
+    return { changeCategory, currentTag, products, tags, store, shopId, addToCart, delToCart, cartList };
   },
 });
 </script>

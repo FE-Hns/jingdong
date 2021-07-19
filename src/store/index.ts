@@ -42,6 +42,15 @@ export default createStore({
   mutations: {
     addToCart(state, data: CartType) {
       const { shopId, productId, shopInfo } = data;
+      const setValue = () => {
+        state.cartList[shopId][productId].count += 1;
+        state.cartList[shopId][productId].currentPrice = shopInfo.currentPrice;
+        state.cartList[shopId][productId].id = shopInfo.id;
+        state.cartList[shopId][productId].imgUrl = shopInfo.imgUrl;
+        state.cartList[shopId][productId].originalPrice = shopInfo.originalPrice;
+        state.cartList[shopId][productId].sales = shopInfo.sales;
+        state.cartList[shopId][productId].title = shopInfo.title;
+      };
       if (!state.cartList[shopId]) {
         state.cartList[shopId] = {};
         state.cartList[shopId][productId] = {
@@ -53,13 +62,7 @@ export default createStore({
           title: "",
           count: 0,
         };
-        state.cartList[shopId][productId].count = 1;
-        state.cartList[shopId][productId].currentPrice = shopInfo.currentPrice;
-        state.cartList[shopId][productId].id = shopInfo.id;
-        state.cartList[shopId][productId].imgUrl = shopInfo.imgUrl;
-        state.cartList[shopId][productId].originalPrice = shopInfo.originalPrice;
-        state.cartList[shopId][productId].sales = shopInfo.sales;
-        state.cartList[shopId][productId].title = shopInfo.title;
+        setValue();
       } else {
         if (!state.cartList[shopId][productId]) {
           state.cartList[shopId][productId] = {
@@ -71,24 +74,15 @@ export default createStore({
             title: "",
             count: 0,
           };
-          state.cartList[shopId][productId].count = 1;
-          state.cartList[shopId][productId].currentPrice = shopInfo.currentPrice;
-          state.cartList[shopId][productId].id = shopInfo.id;
-          state.cartList[shopId][productId].imgUrl = shopInfo.imgUrl;
-          state.cartList[shopId][productId].originalPrice = shopInfo.originalPrice;
-          state.cartList[shopId][productId].sales = shopInfo.sales;
-          state.cartList[shopId][productId].title = shopInfo.title;
+          setValue();
         } else {
-          state.cartList[shopId][productId].count += 1;
-          state.cartList[shopId][productId].currentPrice = shopInfo.currentPrice;
-          state.cartList[shopId][productId].id = shopInfo.id;
-          state.cartList[shopId][productId].imgUrl = shopInfo.imgUrl;
-          state.cartList[shopId][productId].originalPrice = shopInfo.originalPrice;
-          state.cartList[shopId][productId].sales = shopInfo.sales;
-          state.cartList[shopId][productId].title = shopInfo.title;
+          setValue();
         }
       }
-      console.log(state.cartList);
+    },
+    delToCart(state, data: CartType) {
+      const { shopId, productId } = data;
+      state.cartList[shopId][productId].count -= 1;
     },
   },
   actions: {},
