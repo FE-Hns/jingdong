@@ -121,9 +121,11 @@ export default defineComponent({
     Cart,
   },
   setup() {
+    // 获取路径
     const route = useRoute();
-
+    // 获取路由
     const router = useRouter();
+
     // 返回上一页
     const { handleClickBack } = backHandler(router);
     // 切换商品分类
