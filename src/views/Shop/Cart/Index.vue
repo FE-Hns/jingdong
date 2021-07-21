@@ -1,13 +1,34 @@
 <template>
-  <div class="cart">
-    <div class="cart__num">
-      <img src="../../../assets/imgs/basket.png" alt="" />
-      <div class="icon">{{ total }}</div>
+  <div>
+    <div class="product">
+      <div class="product__item" v-for="item in productList" :key="item.id">
+        <img :src="item.imgUrl" alt="" />
+        <div class="product__item__price">
+          <div class="product__item__price__title">{{ item.title }}</div>
+          <div class="product__item__price__sale">{{ `月售${item.sales}件` }}</div>
+          <div class="product__item__price__expensive">
+            <span class="product__item__price__expensive__yen">&yen;</span>
+            <span class="product__item__price__expensive__currentPrice">{{ item.currentPrice }}</span>
+            <span class="product__item__price__expensive__originalPrice">&yen;{{ item.originalPrice }}</span>
+          </div>
+        </div>
+        <div class="product__item__action">
+          <span class="iconfont del" @click="delToCart(shopId, item.id, item)" v-if="item.count > 0">&#xe656;</span>
+          <span class="num" v-if="item.count > 0">{{ item.count || 0 }}</span>
+          <span class="iconfont add" @click="addToCart(shopId, item.id, item)">&#xe62c;</span>
+        </div>
+      </div>
     </div>
-    <div class="cart__total">
-      总计：<span>&yen;{{ price }}</span>
+    <div class="cart">
+      <div class="cart__num">
+        <img src="../../../assets/imgs/basket.png" alt="" />
+        <div class="icon">{{ total }}</div>
+      </div>
+      <div class="cart__total">
+        总计：<span>&yen;{{ price }}</span>
+      </div>
+      <div class="cart__settle">去结算</div>
     </div>
-    <div class="cart__settle">去结算</div>
   </div>
 </template>
 
@@ -43,14 +64,22 @@ const cartEffect = () => {
     return util.formatNumTwo(sum);
   });
 
-  return { total, price };
+  const productList = computed(() => {
+    const list: any[] = [];
+    Object.keys(products).forEach((_k) => {
+      list.push(products[_k]);
+    });
+    return list;
+  });
+
+  return { total, price, productList };
 };
 
 export default defineComponent({
   name: "Cart",
   setup() {
-    const { total, price } = cartEffect();
-    return { total, price };
+    const { total, price, productList } = cartEffect();
+    return { total, price, productList };
   },
 });
 </script>
@@ -109,6 +138,82 @@ export default defineComponent({
     color: @bg-color-white;
     background-color: @content-color-light-blue;
     text-align: center;
+  }
+}
+.product {
+  padding: 0.12rem 0.16rem;
+  overflow-y: scroll;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 49px;
+  max-height: 300px;
+  background-color: #fff;
+  &__item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid @content-color-light-white;
+    padding: 0.12rem 0;
+    position: relative;
+    img {
+      width: 0.68rem;
+      height: 0.68rem;
+    }
+    &__price {
+      margin-left: 0.16rem;
+      flex: 1;
+      &__title {
+        font-size: 0.14rem;
+        color: @content-color-dark;
+        line-height: 0.2rem;
+      }
+      &__sale {
+        font-size: 0.12rem;
+        color: @content-color-dark;
+        margin: 0.06rem 0;
+        line-height: 0.16rem;
+      }
+      &__expensive {
+        position: relative;
+        line-height: 0.2rem;
+        font-size: 0.12rem;
+        &__yen {
+          color: @content-color-orange;
+          font-size: 0.12rem;
+        }
+        &__currentPrice {
+          font-size: 0.14rem;
+          color: @content-color-orange;
+          margin-right: 0.06rem;
+        }
+        &__originalPrice {
+          font-size: 0.12rem;
+          text-decoration: line-through;
+          color: @content-color-light-grey;
+        }
+      }
+    }
+    &__action {
+      position: absolute;
+      right: 0;
+      bottom: 0.12rem;
+      display: flex;
+      align-items: center;
+      .del {
+        font-size: 0.2rem;
+        margin-right: 0.1rem;
+        color: @content-color-dark-grey;
+      }
+      .num {
+        font-size: 0.14rem;
+        color: @content-color-dark;
+        margin-right: 0.1rem;
+      }
+      .add {
+        font-size: 0.2rem;
+        color: @content-color-dark-blue;
+      }
+    }
   }
 }
 </style>

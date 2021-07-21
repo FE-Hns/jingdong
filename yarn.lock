@@ -1087,6 +1087,11 @@
   "resolved" "https://registry.nlark.com/@types/normalize-package-data/download/@types/normalize-package-data-2.4.0.tgz"
   "version" "2.4.0"
 
+"@types/numeral@^2.0.1":
+  "integrity" "sha1-9ycKFsZD1XlhmbKgPR8oWV049oc="
+  "resolved" "https://registry.nlark.com/@types/numeral/download/@types/numeral-2.0.1.tgz"
+  "version" "2.0.1"
+
 "@types/parse-json@^4.0.0":
   "integrity" "sha1-L4u0QUNNFjs1+4/9zNcTiSf/uMA="
   "resolved" "https://registry.nlark.com/@types/parse-json/download/@types/parse-json-4.0.0.tgz"
@@ -6589,6 +6594,11 @@
   "resolved" "https://registry.npm.taobao.org/number-is-nan/download/number-is-nan-1.0.1.tgz?cache=0&sync_timestamp=1617776177506&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnumber-is-nan%2Fdownload%2Fnumber-is-nan-1.0.1.tgz"
   "version" "1.0.1"
 
+"numeral@^2.0.6":
+  "integrity" "sha1-StCAk21EPCVhrtnyGX7//iX05QY="
+  "resolved" "https://registry.npm.taobao.org/numeral/download/numeral-2.0.6.tgz"
+  "version" "2.0.6"
+
 "oauth-sign@~0.9.0":
   "integrity" "sha1-R6ewFrqmi1+g7PPe4IqFxnmsZFU="
   "resolved" "https://registry.npm.taobao.org/oauth-sign/download/oauth-sign-0.9.0.tgz"
@@ -9403,7 +9413,7 @@
     "deepmerge" "^4.2.2"
     "shvl" "^2.0.3"
 
-"vuex@^3.0 || ^4.0.0-rc", "vuex@^4.0.0-0":
+"vuex@^4.0.0-0":
   "integrity" "sha1-6DxUHW8xFzlp76uyxdHEZbaCiH4="
   "resolved" "https://registry.nlark.com/vuex/download/vuex-4.0.1.tgz?cache=0&sync_timestamp=1621869031964&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvuex%2Fdownload%2Fvuex-4.0.1.tgz"
   "version" "4.0.1"
