@@ -96,7 +96,7 @@ const getProductsByCategoryHandler = (route: RouteLocationNormalizedLoaded, tag:
 };
 
 // 购物车逻辑
-const cartEeffect = (store: Store<any>) => {
+export const cartController = (store: Store<any>) => {
   const addToCart = (shopId: string, productId: string, shopInfo: any) => {
     store.commit("addToCart", { shopId, productId, shopInfo });
   };
@@ -125,7 +125,7 @@ export default defineComponent({
     // 获取商品信息
     const { products } = getProductsByCategoryHandler(route, currentTag);
     // 购物车逻辑
-    const { addToCart, delToCart } = cartEeffect(store);
+    const { addToCart, delToCart } = cartController(store);
 
     return { changeCategory, currentTag, products, tags, store, shopId, addToCart, delToCart, cartList };
   },

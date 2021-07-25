@@ -1,21 +1,23 @@
 <template>
   <div>
     <div class="product">
-      <div class="product__item" v-for="item in productList" :key="item.id">
-        <img :src="item.imgUrl" alt="" />
-        <div class="product__item__price">
-          <div class="product__item__price__title">{{ item.title }}</div>
-          <div class="product__item__price__sale">{{ `月售${item.sales}件` }}</div>
-          <div class="product__item__price__expensive">
-            <span class="product__item__price__expensive__yen">&yen;</span>
-            <span class="product__item__price__expensive__currentPrice">{{ item.currentPrice }}</span>
-            <span class="product__item__price__expensive__originalPrice">&yen;{{ item.originalPrice }}</span>
+      <div v-for="item in productList" :key="item.id">
+        <div class="product__item" v-if="item.count > 0">
+          <img :src="item.imgUrl" alt="" />
+          <div class="product__item__price">
+            <div class="product__item__price__title">{{ item.title }}</div>
+            <div class="product__item__price__sale">{{ `月售${item.sales}件` }}</div>
+            <div class="product__item__price__expensive">
+              <span class="product__item__price__expensive__yen">&yen;</span>
+              <span class="product__item__price__expensive__currentPrice">{{ item.currentPrice }}</span>
+              <span class="product__item__price__expensive__originalPrice">&yen;{{ item.originalPrice }}</span>
+            </div>
           </div>
-        </div>
-        <div class="product__item__action">
-          <span class="iconfont del" @click="delToCart(shopId, item.id, item)" v-if="item.count > 0">&#xe656;</span>
-          <span class="num" v-if="item.count > 0">{{ item.count || 0 }}</span>
-          <span class="iconfont add" @click="addToCart(shopId, item.id, item)">&#xe62c;</span>
+          <div class="product__item__action">
+            <span class="iconfont del" @click="delToCart(shopId, item.id, item)" v-if="item.count > 0">&#xe656;</span>
+            <span class="num" v-if="item.count > 0">{{ item.count || 0 }}</span>
+            <span class="iconfont add" @click="addToCart(shopId, item.id, item)">&#xe62c;</span>
+          </div>
         </div>
       </div>
     </div>
@@ -37,13 +39,14 @@ import { defineComponent, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import util from "../../../utils/common";
+import { cartController } from "../Product/Index.vue";
 
 // 处理购物车
 const cartEffect = () => {
   const route = useRoute();
   const store = useStore();
   const shopId = route.params.id;
-  const products = typeof shopId === "string" ? store.state.cartList[shopId] : [];
+  const products = typeof shopId === "string" ? store.state.cartList[shopId] : {};
 
   // 计算总数
   const total = computed(() => {
@@ -66,20 +69,23 @@ const cartEffect = () => {
 
   const productList = computed(() => {
     const list: any[] = [];
-    Object.keys(products).forEach((_k) => {
-      list.push(products[_k]);
-    });
+    products &&
+      Object.keys(products).forEach((_k) => {
+        list.push(products[_k]);
+      });
     return list;
   });
 
-  return { total, price, productList };
+  const { addToCart, delToCart } = cartController(store);
+
+  return { shopId, total, price, productList, addToCart, delToCart };
 };
 
 export default defineComponent({
   name: "Cart",
   setup() {
-    const { total, price, productList } = cartEffect();
-    return { total, price, productList };
+    const { shopId, total, price, productList, addToCart, delToCart } = cartEffect();
+    return { shopId, total, price, productList, addToCart, delToCart };
   },
 });
 </script>
