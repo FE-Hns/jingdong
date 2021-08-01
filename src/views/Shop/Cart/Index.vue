@@ -3,6 +3,12 @@
     <div class="product">
       <div v-for="item in productList" :key="item.id">
         <div class="product__item" v-if="item.count > 0">
+          <div
+            :class="['product__item__check', 'iconfont', { checked: item.check }]"
+            @click="changeProductCheck(shopId, item.id)"
+          >
+            &#xe69b;
+          </div>
           <img :src="item.imgUrl" alt="" />
           <div class="product__item__price">
             <div class="product__item__price__title">{{ item.title }}</div>
@@ -39,7 +45,7 @@ import { defineComponent, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import util from "../../../utils/common";
-import { cartController } from "../Product/Index.vue";
+import { cartController } from "../../../common/cartController";
 
 // 处理购物车
 const cartEffect = () => {
@@ -76,16 +82,16 @@ const cartEffect = () => {
     return list;
   });
 
-  const { addToCart, delToCart } = cartController(store);
+  const { addToCart, delToCart, changeProductCheck } = cartController(store);
 
-  return { shopId, total, price, productList, addToCart, delToCart };
+  return { shopId, total, price, productList, addToCart, delToCart, changeProductCheck };
 };
 
 export default defineComponent({
   name: "Cart",
   setup() {
-    const { shopId, total, price, productList, addToCart, delToCart } = cartEffect();
-    return { shopId, total, price, productList, addToCart, delToCart };
+    const { shopId, total, price, productList, addToCart, delToCart, changeProductCheck } = cartEffect();
+    return { shopId, total, price, productList, addToCart, delToCart, changeProductCheck };
   },
 });
 </script>
@@ -161,9 +167,16 @@ export default defineComponent({
     border-bottom: 1px solid @content-color-light-white;
     padding: 0.12rem 0;
     position: relative;
+    &__check {
+      margin-right: 0.16rem;
+      &.checked {
+        color: #0091ff;
+      }
+      color: #ccc;
+    }
     img {
-      width: 0.68rem;
-      height: 0.68rem;
+      width: 0.46rem;
+      height: 0.46rem;
     }
     &__price {
       margin-left: 0.16rem;

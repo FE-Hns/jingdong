@@ -16,6 +16,7 @@ interface CartList {
       sales?: number;
       title?: string;
       count: number;
+      check: boolean;
     };
   };
 }
@@ -44,6 +45,7 @@ export default createStore({
     addToCart(state, data: CartType) {
       const { shopId, productId, shopInfo } = data;
       const setValue = () => {
+        state.cartList[shopId][productId].check = true;
         state.cartList[shopId][productId].count += 1;
         state.cartList[shopId][productId].currentPrice = shopInfo.currentPrice;
         state.cartList[shopId][productId].id = shopInfo.id;
@@ -62,6 +64,7 @@ export default createStore({
           sales: 0,
           title: "",
           count: 0,
+          check: true,
         };
         setValue();
       } else {
@@ -74,6 +77,7 @@ export default createStore({
             sales: 0,
             title: "",
             count: 0,
+            check: true,
           };
           setValue();
         } else {
@@ -84,6 +88,11 @@ export default createStore({
     delToCart(state, data: CartType) {
       const { shopId, productId } = data;
       state.cartList[shopId][productId].count -= 1;
+    },
+    changeProductCheck(state, data) {
+      const { shopId, productId } = data;
+      const product = state.cartList[shopId][productId];
+      product.check = !product.check;
     },
   },
   actions: {},

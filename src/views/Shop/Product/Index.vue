@@ -45,6 +45,7 @@ import { useRoute, RouteLocationNormalizedLoaded } from "vue-router";
 import { useStore, Store } from "vuex";
 import { get } from "../../../utils/request";
 import api from "../../../api/Index";
+import { cartController } from "../../../common/cartController";
 
 interface Product {
   id: number;
@@ -96,15 +97,15 @@ const getProductsByCategoryHandler = (route: RouteLocationNormalizedLoaded, tag:
 };
 
 // 购物车逻辑
-export const cartController = (store: Store<any>) => {
-  const addToCart = (shopId: string, productId: string, shopInfo: any) => {
-    store.commit("addToCart", { shopId, productId, shopInfo });
-  };
-  const delToCart = (shopId: string, productId: string, shopInfo: any) => {
-    store.commit("delToCart", { shopId, productId, shopInfo });
-  };
-  return { addToCart, delToCart };
-};
+// export const cartController = (store: Store<any>) => {
+//   const addToCart = (shopId: string, productId: string, shopInfo: any) => {
+//     store.commit("addToCart", { shopId, productId, shopInfo });
+//   };
+//   const delToCart = (shopId: string, productId: string, shopInfo: any) => {
+//     store.commit("delToCart", { shopId, productId, shopInfo });
+//   };
+//   return { addToCart, delToCart };
+// };
 
 export default defineComponent({
   name: "Product",
