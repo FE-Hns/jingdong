@@ -10,20 +10,24 @@ import { useRoute, RouteLocationNormalizedLoaded } from "vue-router";
 import { get } from "../../../utils/request";
 import api from "../../../api/Index";
 import ShopItem from "../../../components/Shop/ShopItem.vue";
+import { cartController } from "../../../common/cartController";
+import { Store, useStore } from "vuex";
 
 // 处理获取商铺信息
-const getShopInfoHandler = (route: RouteLocationNormalizedLoaded) => {
+const getShopInfoHandler = (store: Store<any>, route: RouteLocationNormalizedLoaded, shopId: string) => {
+  const { setShopName } = cartController(store);
   let shopInfo = ref({});
-  const id = route.params?.id;
   const getData = async () => {
-    const result = await get(`${api.getShopInfo}/${id}`, {});
+    const result = await get(`${api.getShopInfo}/${shopId}`, {});
     if (result?.retCode === 0) {
       shopInfo.value = result?.data;
+      setShopName(shopId, shopInfo);
     }
   };
   onMounted(() => {
     getData();
   });
+
   return { shopInfo };
 };
 
@@ -35,8 +39,12 @@ export default defineComponent({
   setup() {
     // 获取路径
     const route = useRoute();
+    // 获取store
+    const store = useStore();
+    // 获取商铺id
+    const shopId = typeof route.params?.id === "string" ? route.params?.id : "";
     // 获取店铺信息
-    const { shopInfo } = getShopInfoHandler(route);
+    const { shopInfo } = getShopInfoHandler(store, route, shopId);
 
     return { shopInfo };
   },

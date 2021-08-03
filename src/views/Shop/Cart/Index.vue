@@ -60,7 +60,7 @@ const cartEffect = () => {
   const route = useRoute();
   const store = useStore();
   const shopId = route.params.id;
-  const products = typeof shopId === "string" ? store.state.cartList[shopId] : {};
+  const products = typeof shopId === "string" ? store.state.cartList?.[shopId]?.["productList"] : {};
   let showProduct = ref(false);
 
   // 计算总数
@@ -148,6 +148,7 @@ export default defineComponent({
       allChecked,
       clearCart,
     } = cartEffect();
+
     return {
       shopId,
       total,

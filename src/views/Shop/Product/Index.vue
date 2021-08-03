@@ -26,11 +26,11 @@
           <span
             class="iconfont del"
             @click="delToCart(shopId, item.id, item)"
-            v-if="cartList[shopId]?.[item.id]?.count > 0"
+            v-if="cartList[shopId]?.['productList']?.[item.id]?.count > 0"
             >&#xe656;</span
           >
-          <span class="num" v-if="cartList[shopId]?.[item.id]?.count > 0">{{
-            cartList[shopId]?.[item.id]?.count || 0
+          <span class="num" v-if="cartList[shopId]?.['productList']?.[item.id]?.count">{{
+            cartList[shopId]?.["productList"]?.[item.id]?.count || 0
           }}</span>
           <span class="iconfont add" @click="addToCart(shopId, item.id, item)">&#xe62c;</span>
         </div>
@@ -95,17 +95,6 @@ const getProductsByCategoryHandler = (route: RouteLocationNormalizedLoaded, tag:
   });
   return { products };
 };
-
-// 购物车逻辑
-// export const cartController = (store: Store<any>) => {
-//   const addToCart = (shopId: string, productId: string, shopInfo: any) => {
-//     store.commit("addToCart", { shopId, productId, shopInfo });
-//   };
-//   const delToCart = (shopId: string, productId: string, shopInfo: any) => {
-//     store.commit("delToCart", { shopId, productId, shopInfo });
-//   };
-//   return { addToCart, delToCart };
-// };
 
 export default defineComponent({
   name: "Product",
