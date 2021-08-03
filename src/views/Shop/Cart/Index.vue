@@ -1,6 +1,14 @@
 <template>
   <div>
-    <div class="product">
+    <div class="mask" v-if="showProduct"></div>
+    <div class="product" v-if="showProduct">
+      <div class="product__tool">
+        <div class="product__tool__all" @click="selectAll(shopId)">
+          <span :class="['product__tool__all__check', 'iconfont', { checked: allChecked }]">&#xe69b;</span>
+          全选
+        </div>
+        <div class="product__tool__clear" @click="clearCart">清空购物车</div>
+      </div>
       <div v-for="item in productList" :key="item.id">
         <div class="product__item" v-if="item.count > 0">
           <div
@@ -28,7 +36,7 @@
       </div>
     </div>
     <div class="cart">
-      <div class="cart__num">
+      <div class="cart__num" @click="toggleProduct">
         <img src="../../../assets/imgs/basket.png" alt="" />
         <div class="icon">{{ total }}</div>
       </div>
@@ -41,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import util from "../../../utils/common";
@@ -53,13 +61,16 @@ const cartEffect = () => {
   const store = useStore();
   const shopId = route.params.id;
   const products = typeof shopId === "string" ? store.state.cartList[shopId] : {};
+  let showProduct = ref(false);
 
   // 计算总数
   const total = computed(() => {
     let sum = 0;
     for (const key in products) {
       const product = products[key];
-      sum += product.count;
+      if (product.count > 0 && product.check) {
+        sum += product.count;
+      }
     }
     return sum;
   });
@@ -68,7 +79,9 @@ const cartEffect = () => {
     let sum = 0;
     for (const key in products) {
       const product = products[key];
-      sum += product.count * product.currentPrice;
+      if (product.count > 0 && product.check) {
+        sum += product.count * product.currentPrice;
+      }
     }
     return util.formatNumTwo(sum);
   });
@@ -82,22 +95,87 @@ const cartEffect = () => {
     return list;
   });
 
-  const { addToCart, delToCart, changeProductCheck } = cartController(store);
+  // 计算总价
+  const allChecked = computed(() => {
+    let checked = true;
+    for (const key in products) {
+      const product = products[key];
+      if (!product.check) {
+        checked = false;
+        break;
+      }
+    }
+    return checked;
+  });
 
-  return { shopId, total, price, productList, addToCart, delToCart, changeProductCheck };
+  // 点击购物车 展示购物详情
+  const toggleProduct = () => {
+    showProduct.value = !showProduct.value;
+  };
+
+  const { addToCart, delToCart, changeProductCheck, selectAll, clearCart } = cartController(store);
+
+  return {
+    shopId,
+    total,
+    price,
+    productList,
+    showProduct,
+    addToCart,
+    delToCart,
+    changeProductCheck,
+    toggleProduct,
+    selectAll,
+    allChecked,
+    clearCart,
+  };
 };
 
 export default defineComponent({
   name: "Cart",
   setup() {
-    const { shopId, total, price, productList, addToCart, delToCart, changeProductCheck } = cartEffect();
-    return { shopId, total, price, productList, addToCart, delToCart, changeProductCheck };
+    const {
+      shopId,
+      total,
+      price,
+      productList,
+      showProduct,
+      addToCart,
+      delToCart,
+      changeProductCheck,
+      toggleProduct,
+      selectAll,
+      allChecked,
+      clearCart,
+    } = cartEffect();
+    return {
+      shopId,
+      total,
+      price,
+      productList,
+      showProduct,
+      addToCart,
+      delToCart,
+      changeProductCheck,
+      toggleProduct,
+      selectAll,
+      allChecked,
+      clearCart,
+    };
   },
 });
 </script>
 
 <style lang="less" scoped>
 @import url("../../../style/variable.less");
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .cart {
   position: absolute;
   bottom: 0;
@@ -110,6 +188,7 @@ export default defineComponent({
   color: @content-color-dark;
   border-top: 1px solid @content-color-light-white;
   box-sizing: border-box;
+  background-color: @bg-color-white;
   &__num {
     width: 0.76rem;
     height: 0.49rem;
@@ -161,6 +240,24 @@ export default defineComponent({
   bottom: 49px;
   max-height: 300px;
   background-color: #fff;
+  &__tool {
+    display: flex;
+    font-size: 14px;
+    color: @content-color-dark;
+    &__clear {
+      text-align: right;
+      flex: 1;
+    }
+    &__all {
+      &__check {
+        margin-right: 0.16rem;
+        color: @bg-color-middle-white;
+        &.checked {
+          color: @content-color-dark-blue;
+        }
+      }
+    }
+  }
   &__item {
     display: flex;
     align-items: center;
@@ -169,10 +266,10 @@ export default defineComponent({
     position: relative;
     &__check {
       margin-right: 0.16rem;
+      color: @bg-color-middle-white;
       &.checked {
-        color: #0091ff;
+        color: @content-color-dark-blue;
       }
-      color: #ccc;
     }
     img {
       width: 0.46rem;

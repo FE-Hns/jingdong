@@ -42,6 +42,7 @@ export default createStore({
     cartList,
   },
   mutations: {
+    // 添加商品到购物车
     addToCart(state, data: CartType) {
       const { shopId, productId, shopInfo } = data;
       const setValue = () => {
@@ -85,14 +86,47 @@ export default createStore({
         }
       }
     },
+    // 删除购物车中的商品
     delToCart(state, data: CartType) {
       const { shopId, productId } = data;
       state.cartList[shopId][productId].count -= 1;
+      if (state.cartList[shopId][productId].count <= 0) {
+        delete state.cartList[shopId][productId];
+      }
     },
+    // 修改商品选中状态
     changeProductCheck(state, data) {
       const { shopId, productId } = data;
       const product = state.cartList[shopId][productId];
       product.check = !product.check;
+    },
+    // 全选
+    selectAll(state, data) {
+      const { shopId } = data;
+      const products = state.cartList[shopId];
+      let allChecked = true;
+      for (const productId in products) {
+        const product = products[productId];
+        if (!product.check) {
+          allChecked = false;
+          break;
+        }
+      }
+      if (allChecked) {
+        for (const productId in products) {
+          const product = products[productId];
+          product.check = false;
+        }
+      } else {
+        for (const productId in products) {
+          const product = products[productId];
+          product.check = true;
+        }
+      }
+    },
+    // 清空购物车
+    clearCart(state) {
+      state.cartList = {};
     },
   },
   actions: {},

@@ -42,7 +42,7 @@
 <script lang="ts">
 import { defineComponent, watchEffect, ref, Ref } from "vue";
 import { useRoute, RouteLocationNormalizedLoaded } from "vue-router";
-import { useStore, Store } from "vuex";
+import { useStore } from "vuex";
 import { get } from "../../../utils/request";
 import api from "../../../api/Index";
 import { cartController } from "../../../common/cartController";
