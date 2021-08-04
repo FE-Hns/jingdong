@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { useRoute, RouteLocationNormalizedLoaded } from "vue-router";
+import { useRoute } from "vue-router";
 import { get } from "../../../utils/request";
 import api from "../../../api/Index";
 import ShopItem from "../../../components/Shop/ShopItem.vue";
@@ -14,13 +14,14 @@ import { cartController } from "../../../common/cartController";
 import { Store, useStore } from "vuex";
 
 // 处理获取商铺信息
-const getShopInfoHandler = (store: Store<any>, route: RouteLocationNormalizedLoaded, shopId: string) => {
+const getShopInfoHandler = (store: Store<any>, shopId: string) => {
   const { setShopName } = cartController(store);
   let shopInfo = ref({});
   const getData = async () => {
     const result = await get(`${api.getShopInfo}/${shopId}`, {});
     if (result?.retCode === 0) {
       shopInfo.value = result?.data;
+      // 存储商铺信息
       setShopName(shopId, shopInfo);
     }
   };
@@ -44,7 +45,7 @@ export default defineComponent({
     // 获取商铺id
     const shopId = typeof route.params?.id === "string" ? route.params?.id : "";
     // 获取店铺信息
-    const { shopInfo } = getShopInfoHandler(store, route, shopId);
+    const { shopInfo } = getShopInfoHandler(store, shopId);
 
     return { shopInfo };
   },

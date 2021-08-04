@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="mask" v-if="showProduct"></div>
-    <div class="product" v-if="showProduct">
+    <div class="mask" v-if="showCart"></div>
+    <div class="product" v-if="showCart">
       <div class="product__tool">
         <div class="product__tool__all" @click="selectAll(shopId)">
-          <span :class="['product__tool__all__check', 'iconfont', { checked: allChecked }]">&#xe69b;</span>
+          <span :class="['product__tool__all__check', 'iconfont', { checked: calculation.allChecked }]">&#xe69b;</span>
           全选
         </div>
         <div class="product__tool__clear" @click="clearCart">清空购物车</div>
@@ -38,10 +38,10 @@
     <div class="cart">
       <div class="cart__num" @click="toggleProduct">
         <img src="../../../assets/imgs/basket.png" alt="" />
-        <div class="icon">{{ total }}</div>
+        <div class="icon">{{ calculation.total }}</div>
       </div>
       <div class="cart__total">
-        总计：<span>&yen;{{ price }}</span>
+        总计：<span>&yen;{{ calculation.price }}</span>
       </div>
       <div class="cart__settle">去结算</div>
     </div>
@@ -61,29 +61,25 @@ const cartEffect = () => {
   const store = useStore();
   const shopId = route.params.id;
   const products = typeof shopId === "string" ? store.state.cartList?.[shopId]?.["productList"] : {};
-  let showProduct = ref(false);
+  let showCartFlag = ref(false);
 
-  // 计算总数
-  const total = computed(() => {
-    let sum = 0;
+  const calculation = computed(() => {
+    const result = { total: 0, price: 0, allChecked: true };
     for (const key in products) {
       const product = products[key];
       if (product.count > 0 && product.check) {
-        sum += product.count;
+        result.total += product.count; // 计算总数
+        result.price += product.count * product.currentPrice; // 计算总价钱
+      }
+      if (!product.check) {
+        result.allChecked = false; // 全选状态
       }
     }
-    return sum;
+    return { total: result.total, price: util.formatNumTwo(result.price), allChecked: result.allChecked };
   });
-  // 计算总价
-  const price = computed(() => {
-    let sum = 0;
-    for (const key in products) {
-      const product = products[key];
-      if (product.count > 0 && product.check) {
-        sum += product.count * product.currentPrice;
-      }
-    }
-    return util.formatNumTwo(sum);
+
+  const showCart = computed(() => {
+    return showCartFlag.value && calculation.value.total > 0;
   });
 
   const productList = computed(() => {
@@ -95,39 +91,25 @@ const cartEffect = () => {
     return list;
   });
 
-  // 计算总价
-  const allChecked = computed(() => {
-    let checked = true;
-    for (const key in products) {
-      const product = products[key];
-      if (!product.check) {
-        checked = false;
-        break;
-      }
-    }
-    return checked;
-  });
-
   // 点击购物车 展示购物详情
   const toggleProduct = () => {
-    showProduct.value = !showProduct.value;
+    showCartFlag.value = !showCartFlag.value;
   };
 
   const { addToCart, delToCart, changeProductCheck, selectAll, clearCart } = cartController(store);
 
   return {
     shopId,
-    total,
-    price,
+    calculation,
     productList,
-    showProduct,
+    showCartFlag,
     addToCart,
     delToCart,
     changeProductCheck,
     toggleProduct,
     selectAll,
-    allChecked,
     clearCart,
+    showCart,
   };
 };
 
@@ -136,32 +118,30 @@ export default defineComponent({
   setup() {
     const {
       shopId,
-      total,
-      price,
+      calculation,
       productList,
-      showProduct,
+      showCartFlag,
       addToCart,
       delToCart,
       changeProductCheck,
       toggleProduct,
       selectAll,
-      allChecked,
       clearCart,
+      showCart,
     } = cartEffect();
 
     return {
       shopId,
-      total,
-      price,
+      calculation,
       productList,
-      showProduct,
+      showCartFlag,
       addToCart,
       delToCart,
       changeProductCheck,
       toggleProduct,
       selectAll,
-      allChecked,
       clearCart,
+      showCart,
     };
   },
 });

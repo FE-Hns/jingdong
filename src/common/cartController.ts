@@ -4,7 +4,6 @@ import { Store } from "vuex";
 export const cartController = (store: Store<any>) => {
   // 添加购物车
   const addToCart = (shopId: string, productId: string, productInfo: any) => {
-    console.log(shopId, productId, productInfo);
     store.commit("addToCart", { shopId, productId, productInfo });
   };
   // 从购物车中删除

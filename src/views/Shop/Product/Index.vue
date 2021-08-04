@@ -23,15 +23,10 @@
           </div>
         </div>
         <div class="product__item__action">
-          <span
-            class="iconfont del"
-            @click="delToCart(shopId, item.id, item)"
-            v-if="cartList[shopId]?.['productList']?.[item.id]?.count > 0"
+          <span class="iconfont del" @click="delToCart(shopId, item.id, item)" v-if="showNum(shopId, item.id)"
             >&#xe656;</span
           >
-          <span class="num" v-if="cartList[shopId]?.['productList']?.[item.id]?.count">{{
-            cartList[shopId]?.["productList"]?.[item.id]?.count || 0
-          }}</span>
+          <span class="num" v-if="showNum(shopId, item.id)">{{ productNum(shopId, item.id) }}</span>
           <span class="iconfont add" @click="addToCart(shopId, item.id, item)">&#xe62c;</span>
         </div>
       </div>
@@ -108,6 +103,9 @@ export default defineComponent({
       state: { cartList },
     } = store;
 
+    // const cartList = localStorage.vuex ? JSON.parse(localStorage.vuex).cartList : {};
+    // console.log(cartList);
+
     // 获取shopId
     const shopId = route.params.id;
     // 切换商品分类
@@ -116,8 +114,28 @@ export default defineComponent({
     const { products } = getProductsByCategoryHandler(route, currentTag);
     // 购物车逻辑
     const { addToCart, delToCart } = cartController(store);
+    // 判断当前商品数量是否大于0
+    const showNum = (shopId: any, productId: any) => {
+      return cartList[shopId]?.["productList"]?.[productId]?.count > 0;
+    };
+    // 展示商品数量逻辑
+    const productNum = (shopId: any, productId: any) => {
+      return cartList[shopId]?.["productList"]?.[productId]?.count || 0;
+    };
 
-    return { changeCategory, currentTag, products, tags, store, shopId, addToCart, delToCart, cartList };
+    return {
+      changeCategory,
+      currentTag,
+      products,
+      tags,
+      store,
+      shopId,
+      addToCart,
+      delToCart,
+      cartList,
+      showNum,
+      productNum,
+    };
   },
 });
 </script>
