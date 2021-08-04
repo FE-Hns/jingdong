@@ -4,12 +4,7 @@
       <div class="shop__item__img">
         <img :src="data.imgUrl" alt="" />
       </div>
-      <div
-        :class="{
-          shop__item__desc: true,
-          'shop__item__desc--border': hasBorder,
-        }"
-      >
+      <div :class="['shop__item__desc', { 'shop__item__desc--border': hasBorder }]">
         <p class="shop__item__desc__title">{{ data.name }}</p>
         <p class="shop__item__desc__detail">
           <span>月售 {{ data.sales }}</span>
