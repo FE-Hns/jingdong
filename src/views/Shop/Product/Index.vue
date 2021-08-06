@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect, ref, Ref } from "vue";
+import { defineComponent, watchEffect, ref, Ref, computed } from "vue";
 import { useRoute, RouteLocationNormalizedLoaded } from "vue-router";
 import { useStore } from "vuex";
 import { get } from "../../../utils/request";
@@ -99,12 +99,12 @@ export default defineComponent({
     // 获取vuex
     const store = useStore();
 
-    const {
-      state: { cartList },
-    } = store;
-
     // const cartList = localStorage.vuex ? JSON.parse(localStorage.vuex).cartList : {};
     // console.log(cartList);
+
+    const cartList = computed(() => {
+      return store.state.cartList;
+    });
 
     // 获取shopId
     const shopId = route.params.id;
@@ -113,14 +113,14 @@ export default defineComponent({
     // 获取商品信息
     const { products } = getProductsByCategoryHandler(route, currentTag);
     // 购物车逻辑
-    const { addToCart, delToCart } = cartController(store);
+    const { addToCart, delToCart } = cartController(store, null);
     // 判断当前商品数量是否大于0
     const showNum = (shopId: any, productId: any) => {
-      return cartList[shopId]?.["productList"]?.[productId]?.count > 0;
+      return cartList.value[shopId]?.["productList"]?.[productId]?.count > 0;
     };
     // 展示商品数量逻辑
     const productNum = (shopId: any, productId: any) => {
-      return cartList[shopId]?.["productList"]?.[productId]?.count || 0;
+      return cartList.value[shopId]?.["productList"]?.[productId]?.count || 0;
     };
 
     return {

@@ -15,7 +15,7 @@ import { Store, useStore } from "vuex";
 
 // 处理获取商铺信息
 const getShopInfoHandler = (store: Store<any>, shopId: string) => {
-  const { setShopName } = cartController(store);
+  const { setShopName } = cartController(store, null);
   let shopInfo = ref({});
   const getData = async () => {
     const result = await get(`${api.getShopInfo}/${shopId}`, {});

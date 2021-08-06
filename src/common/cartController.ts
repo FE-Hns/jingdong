@@ -1,7 +1,7 @@
 // 购物车相关的通用逻辑
 import { Ref } from "vue";
 import { Store } from "vuex";
-export const cartController = (store: Store<any>) => {
+export const cartController = (store: Store<any>, params: any) => {
   // 添加购物车
   const addToCart = (shopId: string, productId: string, productInfo: any) => {
     store.commit("addToCart", { shopId, productId, productInfo });
@@ -20,6 +20,7 @@ export const cartController = (store: Store<any>) => {
   };
   // 清空购物车
   const clearCart = () => {
+    params.value = false;
     store.commit("clearCart");
   };
   // 设置商铺名称

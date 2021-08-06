@@ -60,33 +60,48 @@ const cartEffect = () => {
   const route = useRoute();
   const store = useStore();
   const shopId = route.params.id;
-  const products = typeof shopId === "string" ? store.state.cartList?.[shopId]?.["productList"] : {};
+  // const products = typeof shopId === "string" ? store.state.cartList?.[shopId]?.["productList"] : {};
   let showCartFlag = ref(false);
 
+  const products = computed(() => {
+    return typeof shopId === "string" ? store.state.cartList?.[shopId]?.["productList"] : {};
+  });
+
   const calculation = computed(() => {
-    const result = { total: 0, price: 0, allChecked: true };
-    for (const key in products) {
-      const product = products[key];
+    const result = { total: 0, realTotal: 0, price: 0, allChecked: true };
+    for (const key in products.value) {
+      const product = products.value[key];
       if (product.count > 0 && product.check) {
         result.total += product.count; // 计算总数
         result.price += product.count * product.currentPrice; // 计算总价钱
+      }
+      if (product.count > 0) {
+        result.realTotal += product.count;
       }
       if (!product.check) {
         result.allChecked = false; // 全选状态
       }
     }
-    return { total: result.total, price: util.formatNumTwo(result.price), allChecked: result.allChecked };
+    if (result.realTotal <= 0) {
+      showCartFlag.value = false;
+    }
+    return {
+      total: result.total,
+      realTotal: result.realTotal,
+      price: util.formatNumTwo(result.price),
+      allChecked: result.allChecked,
+    };
   });
 
   const showCart = computed(() => {
-    return showCartFlag.value && calculation.value.total > 0;
+    return showCartFlag.value && calculation.value.realTotal > 0;
   });
 
   const productList = computed(() => {
     const list: any[] = [];
-    products &&
-      Object.keys(products).forEach((_k) => {
-        list.push(products[_k]);
+    products.value &&
+      Object.keys(products.value).forEach((_k) => {
+        list.push(products.value[_k]);
       });
     return list;
   });
@@ -96,7 +111,7 @@ const cartEffect = () => {
     showCartFlag.value = !showCartFlag.value;
   };
 
-  const { addToCart, delToCart, changeProductCheck, selectAll, clearCart } = cartController(store);
+  const { addToCart, delToCart, changeProductCheck, selectAll, clearCart } = cartController(store, showCartFlag);
 
   return {
     shopId,

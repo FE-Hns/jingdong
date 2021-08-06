@@ -94,6 +94,7 @@ export default createStore({
           setValue();
         }
       }
+      console.log(state.cartList);
     },
     // 删除购物车中的商品
     delToCart(state, data: CartType) {
