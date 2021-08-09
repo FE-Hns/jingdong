@@ -4,7 +4,7 @@
       :class="['docker__item', index === activeIndex ? 'docker__item--active' : '']"
       v-for="(tag, index) in tags"
       :key="index"
-      @click="changeTag(index)"
+      @click="changeTag(tag, index)"
     >
       <div class="iconfont docker__item__font" v-html="tag.icon"></div>
       <div class="docker__item__desc">{{ tag.label }}</div>
@@ -14,25 +14,31 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
-interface tag {
+import { useRouter } from "vue-router";
+interface Tag {
   icon: string | undefined;
   label: string | undefined;
+  name: string | undefined;
 }
 export default defineComponent({
   name: "Docker",
   setup() {
+    const router = useRouter();
     let state = reactive({
       activeIndex: 0,
     });
-    const changeTag = (index: number): void => {
+    const changeTag = (tag: Tag, index: number): void => {
       state.activeIndex = index;
+      router.push({
+        name: tag.name,
+      });
     };
     const { activeIndex } = toRefs(state);
-    const tags: tag[] = [
-      { icon: "&#xe89c;", label: "首页" },
-      { icon: "&#xe6fc;", label: "购物车" },
-      { icon: "&#xe643;", label: "订单" },
-      { icon: "&#xe601;", label: "我的" },
+    const tags: Tag[] = [
+      { icon: "&#xe89c;", label: "首页", name: "Home" },
+      { icon: "&#xe6fc;", label: "购物车", name: "Cart" },
+      { icon: "&#xe643;", label: "订单", name: "Order" },
+      { icon: "&#xe601;", label: "我的", name: "User" },
     ];
     return {
       tags,

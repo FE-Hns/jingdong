@@ -3,6 +3,7 @@ const Home = () => import(/* webpackChunkName: "home" */ "../views/Home/Index.vu
 const Login = () => import(/* webpackChunkName: "login" */ "../views/Login/Index.vue");
 const Register = () => import(/* webpackChunkName: "register" */ "../views/Register/Index.vue");
 const Shop = () => import(/* webpackChunkName: "shop" */ "../views/Shop/Index.vue");
+const MyCart = () => import(/* webpackChunkName: "cart" */ "../views/Cart/Index.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -32,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/shop/:id",
     name: "Shop",
     component: Shop,
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: MyCart,
   },
 ];
 
