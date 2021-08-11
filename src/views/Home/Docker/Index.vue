@@ -62,6 +62,7 @@ export default defineComponent({
   display: flex;
   text-align: center;
   border-top: 0.01rem solid @content-color-light-white;
+  background-color: #fff;
   &__item {
     flex: 1;
     &__font {
