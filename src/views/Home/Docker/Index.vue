@@ -13,8 +13,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
+import { computed, defineComponent, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 interface Tag {
   icon: string | undefined;
   label: string | undefined;
@@ -24,16 +25,16 @@ export default defineComponent({
   name: "Docker",
   setup() {
     const router = useRouter();
-    let state = reactive({
-      activeIndex: 0,
+    const store = useStore();
+    const activeIndex = computed(() => {
+      return store.state.activeIndex;
     });
     const changeTag = (tag: Tag, index: number): void => {
-      state.activeIndex = index;
+      store.commit("setActiveIndex", index);
       router.push({
         name: tag.name,
       });
     };
-    const { activeIndex } = toRefs(state);
     const tags: Tag[] = [
       { icon: "&#xe89c;", label: "首页", name: "Home" },
       { icon: "&#xe6fc;", label: "购物车", name: "Cart" },

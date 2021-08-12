@@ -46,6 +46,7 @@ export default createStore({
     //   },
     // },
     cartList,
+    activeIndex: 0,
   },
   mutations: {
     // 添加商品到购物车
@@ -148,6 +149,10 @@ export default createStore({
         };
       }
       state.cartList[shopId].shopName = shopInfo.value.name;
+    },
+    // 设置activeIndex
+    setActiveIndex(state, activeIndex) {
+      state.activeIndex = activeIndex;
     },
   },
   actions: {},
