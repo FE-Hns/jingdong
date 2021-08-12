@@ -43,20 +43,21 @@
       <div class="cart__total">
         总计：<span>&yen;{{ calculation.price }}</span>
       </div>
-      <div class="cart__settle">去结算</div>
+      <div class="cart__settle" @click="goToOrder">去结算</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import util from "../../../utils/common";
 import { cartController } from "../../../common/cartController";
 
 // 处理购物车
 const cartEffect = () => {
+  const router = useRouter();
   const route = useRoute();
   const store = useStore();
   const shopId = route.params.id;
@@ -111,6 +112,16 @@ const cartEffect = () => {
     showCartFlag.value = !showCartFlag.value;
   };
 
+  // 去结算
+  const goToOrder = () => {
+    router.push({
+      path: "/order",
+      query: {
+        shopId,
+      },
+    });
+  };
+
   const { addToCart, delToCart, changeProductCheck, selectAll, clearCart } = cartController(store, showCartFlag);
 
   return {
@@ -125,6 +136,7 @@ const cartEffect = () => {
     selectAll,
     clearCart,
     showCart,
+    goToOrder,
   };
 };
 
@@ -143,6 +155,7 @@ export default defineComponent({
       selectAll,
       clearCart,
       showCart,
+      goToOrder,
     } = cartEffect();
 
     return {
@@ -157,6 +170,7 @@ export default defineComponent({
       selectAll,
       clearCart,
       showCart,
+      goToOrder,
     };
   },
 });

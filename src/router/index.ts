@@ -4,6 +4,7 @@ const Login = () => import(/* webpackChunkName: "login" */ "../views/Login/Index
 const Register = () => import(/* webpackChunkName: "register" */ "../views/Register/Index.vue");
 const Shop = () => import(/* webpackChunkName: "shop" */ "../views/Shop/Index.vue");
 const MyCart = () => import(/* webpackChunkName: "cart" */ "../views/Cart/Index.vue");
+const Order = () => import(/* webpackChunkName: "order" */ "../views/Order/Index.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -38,6 +39,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/cart",
     name: "Cart",
     component: MyCart,
+  },
+  {
+    path: "/order",
+    name: "Order",
+    component: Order,
   },
 ];
 
