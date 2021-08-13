@@ -108,17 +108,17 @@ export default defineComponent({
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #f5f5f5;
+  background-color: @bg-color-light-white;
   &__header {
     height: 1.96rem;
-    background-image: linear-gradient(0deg, rgba(0, 145, 255, 0) 4%, #0091ff 50%);
+    background-image: linear-gradient(0deg, rgba(0, 145, 255, 0) 4%, @content-color-dark-blue 50%);
     background-size: 100% 80%;
     background-repeat: no-repeat;
     &__top {
       padding: 0.41rem 0.18rem 0.22rem;
       text-align: center;
       position: relative;
-      color: #fff;
+      color: @bg-color-white;
       &__icon {
         position: absolute;
         top: 50%;
@@ -132,22 +132,22 @@ export default defineComponent({
     &__address {
       border-radius: 0.04rem;
       padding: 0.16rem;
-      background-color: #fff;
+      background-color: @bg-color-white;
       margin: 0 0.18rem;
       position: relative;
       &__title {
         font-size: 0.16rem;
-        color: #333;
+        color: @content-color-dark;
         margin-bottom: 0.16rem;
       }
       &__detail {
         font-size: 0.14rem;
-        color: #333;
+        color: @content-color-dark;
         margin-bottom: 0.06rem;
       }
       &__contact {
         font-size: 0.12rem;
-        color: #666;
+        color: @content-color-dark-grey;
         margin-right: 0.06rem;
       }
       &__icon {
@@ -166,10 +166,10 @@ export default defineComponent({
     right: 0;
     bottom: 0.49rem;
     margin: 0.16rem 0.18rem;
-    background-color: #fff;
+    background-color: @bg-color-white;
     overflow-y: scroll;
     &__item {
-      background-color: #fff;
+      background-color: @bg-color-white;
       padding: 0.16rem;
       border-radius: 0.04rem;
       .shopName {
@@ -207,7 +207,7 @@ export default defineComponent({
               color: @content-color-orange;
               font-size: 0.12rem;
               &.dark {
-                color: #000;
+                color: @content-color-black;
               }
             }
             &__currentPrice {
@@ -215,7 +215,7 @@ export default defineComponent({
               color: @content-color-orange;
               margin-right: 0.06rem;
               &.dark {
-                color: #000;
+                color: @content-color-black;
               }
             }
           }
@@ -229,7 +229,7 @@ export default defineComponent({
     left: 0;
     right: 0;
     height: 0.49rem;
-    background-color: #fff;
+    background-color: @bg-color-white;
     display: flex;
     &__total {
       flex: 1;
@@ -238,12 +238,12 @@ export default defineComponent({
       padding-left: 0.24rem;
       &__name {
         font-size: 0.14rem;
-        color: #333;
+        color: @content-color-dark;
         margin-right: 0.02rem;
       }
       &__num {
         font-size: 0.16rem;
-        color: #151515;
+        color: @content-color-light-black;
       }
     }
     &__btn {
@@ -251,8 +251,8 @@ export default defineComponent({
       line-height: 0.49rem;
       height: 0.49rem;
       text-align: center;
-      color: #fff;
-      background-color: #4fb0f9;
+      color: @bg-color-white;
+      background-color: @content-color-light-blue;
     }
   }
 }
