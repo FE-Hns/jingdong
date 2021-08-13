@@ -2,7 +2,7 @@
   <div class="order">
     <div class="order__header">
       <div class="order__header__top">
-        <div class="order__header__top__icon iconfont">&#xe63b;</div>
+        <div class="order__header__top__icon iconfont" @click="handleClickBack">&#xe63b;</div>
         <div class="order__header__top__title">确认订单</div>
       </div>
       <div class="order__header__address">
@@ -43,7 +43,7 @@
     <div class="order__docker">
       <div class="order__docker__total">
         <span class="order__docker__total__name">实付金额</span>
-        <span class="order__docker__total__num">&yen;62</span>
+        <span class="order__docker__total__num">&yen;{{ total }}</span>
       </div>
       <div class="order__docker__btn">提交订单</div>
     </div>
@@ -53,28 +53,48 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { formatNumTwo } from "../../utils/common";
 
 const orderHandler = () => {
   const store = useStore();
+  const router = useRouter();
   const route = useRoute();
   const shopId = route.query.shopId;
-  // 获取当前店铺下的信息
 
+  // 获取当前店铺下的信息
   const shopList = computed(() => {
     let shop = [];
     typeof shopId === "string" ? shop.push(store.state.cartList?.[shopId]) : (shop = []);
     return shop;
   });
 
-  return { shopList };
+  // 计算实付金额
+  const total = computed(() => {
+    let total = 0;
+    shopList.value.forEach((item) => {
+      const products = item.productList;
+      for (const key in products) {
+        const product = products[key];
+        total += product.currentPrice * product.count;
+      }
+    });
+    return formatNumTwo(total);
+  });
+
+  // 返回上一页
+  const handleClickBack = () => {
+    router.back();
+  };
+
+  return { shopList, total, handleClickBack };
 };
 
 export default defineComponent({
   setup() {
-    const { shopList } = orderHandler();
+    const { shopList, total, handleClickBack } = orderHandler();
 
-    return { shopList };
+    return { shopList, total, handleClickBack };
   },
 });
 </script>
