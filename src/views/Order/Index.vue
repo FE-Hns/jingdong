@@ -45,18 +45,18 @@
         <span class="order__docker__total__name">实付金额</span>
         <span class="order__docker__total__num">&yen;{{ total }}</span>
       </div>
-      <div class="order__docker__btn">提交订单</div>
+      <div class="order__docker__btn" @click="handleSubmitOrder">提交订单</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, getCurrentInstance, ComponentInternalInstance } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { formatNumTwo } from "../../utils/common";
 
-const orderHandler = () => {
+const orderHandler = (app: ComponentInternalInstance | null) => {
   const store = useStore();
   const router = useRouter();
   const route = useRoute();
@@ -87,14 +87,31 @@ const orderHandler = () => {
     router.back();
   };
 
-  return { shopList, total, handleClickBack };
+  const handleSubmitOrder = () => {
+    app?.appContext.config.globalProperties.$confirm({
+      title: "确认要离开收银台？",
+      content: "确认要离开收银台？",
+      cancelText: "取消订单",
+      okText: "确认支付",
+      ok: () => {
+        console.log("ok");
+      },
+      cancel: () => {
+        console.log("cancel");
+      },
+    });
+  };
+
+  return { shopList, total, handleClickBack, handleSubmitOrder };
 };
 
 export default defineComponent({
   setup() {
-    const { shopList, total, handleClickBack } = orderHandler();
+    const app = getCurrentInstance();
 
-    return { shopList, total, handleClickBack };
+    const { shopList, total, handleClickBack, handleSubmitOrder } = orderHandler(app);
+
+    return { shopList, total, handleClickBack, handleSubmitOrder };
   },
 });
 </script>
