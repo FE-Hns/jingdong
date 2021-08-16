@@ -196,7 +196,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   color: @content-color-dark;
-  border-top: 1px solid @content-color-light-white;
+  border-top: 0.1rem solid @content-color-light-white;
   box-sizing: border-box;
   background-color: @bg-color-white;
   &__num {
@@ -247,12 +247,12 @@ export default defineComponent({
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 49px;
-  max-height: 300px;
+  bottom: 0.49rem;
+  max-height: 3rem;
   background-color: #fff;
   &__tool {
     display: flex;
-    font-size: 14px;
+    font-size: 0.14rem;
     color: @content-color-dark;
     &__clear {
       text-align: right;
@@ -271,7 +271,7 @@ export default defineComponent({
   &__item {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid @content-color-light-white;
+    border-bottom: 0.1rem solid @content-color-light-white;
     padding: 0.12rem 0;
     position: relative;
     &__check {

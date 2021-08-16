@@ -172,7 +172,7 @@ export default defineComponent({
   &__item {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid @content-color-light-white;
+    border-bottom: 0.01rem solid @content-color-light-white;
     padding: 0.12rem 0;
     position: relative;
     img {

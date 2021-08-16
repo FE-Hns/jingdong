@@ -25,7 +25,7 @@ export default defineComponent({
   font-size: 0;
   text-align: center;
   padding: 0.12rem 0.18rem;
-  box-shadow: 0 10px 5px @content-color-light-white;
+  box-shadow: 0 0.1rem 0.05rem @content-color-light-white;
   &__item {
     width: 20%;
     img {

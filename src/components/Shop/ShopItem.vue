@@ -64,7 +64,7 @@ export default defineComponent({
         margin: 0 0 0.12rem 0;
       }
       &--border {
-        border-bottom: 1px solid @content-color-light-white;
+        border-bottom: 0.01rem solid @content-color-light-white;
       }
     }
   }
